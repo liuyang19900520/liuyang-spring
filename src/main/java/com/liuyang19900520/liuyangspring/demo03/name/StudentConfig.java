@@ -1,4 +1,4 @@
-package com.liuyang19900520.liuyangspring.demo03;
+package com.liuyang19900520.liuyangspring.demo03.name;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.liuyang19900520.liuyangspring.demo03;
+package com.liuyang19900520.liuyangspring.demo03.name;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  * @author liuya
  */
-@ComponentScan("com.liuyang19900520.liuyangspring.demo03")
+@ComponentScan("com.liuyang19900520.liuyangspring.demo03.name")
 public class LiuyangSpringApplication03 {
     public static void main(String[] args) {
         //传入class对象
