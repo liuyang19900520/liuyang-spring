@@ -3,17 +3,18 @@ package com.liuyang19900520.liuyangspring.demo03.instantiating;
 /**
  * @author liuya
  */
-public class InstanceFactoryMethodService {
+public class InstanceFactoryMethodService extends InstanceFactoryMethodSuperService{
 
-    private InstanceFactoryMethodService() {
+    public InstanceFactoryMethodService() {
+        super();
         System.out.println("InstanceFactoryMethodService=> 构造方法");
     }
 
-    public InstanceFactoryMethodService createInstance() {
-
-        System.out.println("InstanceFactoryMethodService>createInstance 方法");
-
-        return new InstanceFactoryMethodService();
-    }
+//    public InstanceFactoryMethodService createInstance() {
+//
+//        System.out.println("InstanceFactoryMethodService>createInstance 方法");
+//
+//        return new InstanceFactoryMethodService();
+//    }
 
 }
