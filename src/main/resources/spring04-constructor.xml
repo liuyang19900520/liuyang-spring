@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="s1"
+          class="com.liuyang19900520.liuyangspring.demo04.constructor.Student">
+        <constructor-arg name="rank" value="9"/>
+        <constructor-arg name="age" value="10"/>
+        <constructor-arg name="name" value="s1"/>
+    </bean>
+
+<!--    <bean id="s2"-->
+<!--          class="com.liuyang19900520.liuyangspring.demo04.constructor.Student">-->
+<!--        <constructor-arg name="rank" value="8"/>-->
+<!--        <constructor-arg name="age" value="11"/>-->
+<!--        <constructor-arg name="name" value="s2"/>-->
+<!--    </bean>-->
+
+    <bean id="t1"
+          class="com.liuyang19900520.liuyangspring.demo04.constructor.Teacher">
+        <constructor-arg index="0" value="t1"/>
+        <constructor-arg index="1" value="30"/>
+        <constructor-arg index="2" value="1"/>
+    </bean>
+
+</beans>

@@ -1,0 +1,112 @@
+# The IoC Container
+
+## 介绍
+
+### IoC
+
+控制反转（Inversion of Control，缩写为IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。其中最常见的方式叫做依赖注入（Dependency Injection，简称DI），还有一种方式叫“依赖查找”（Dependency Lookup）
+
+在spring中， IoC也称为依赖注入（DI）。对象仅通过构造函数参数，工厂方法的参数或在构造或从工厂方法返回后在对象实例上设置的属性来定义其依赖项。然后，容器在创建bean时注入那些依赖项。此过程从根本上讲是通过使用类的直接构造或诸如服务定位器模式之类的方法来控制其依赖项的实例化或位置的bean本身的逆过程（因此称为Control Inversion）。
+
+### Bean
+
+在Spring中，构成应用程序主干并由Spring IoC容器管理的对象称为bean。 Bean是由Spring IoC容器实例化，组装和以其他方式管理的对象。否则，bean仅仅是应用程序中许多对象之一。 Bean及其之间的依赖关系反映在容器使用的配置元数据中。
+
+* 参考
+
+>  [浅析Spring IOC、依赖注入(DI)和依赖查找(DL)](https://www.cnblogs.com/vince-zww/p/11498605.html)
+
+## IoC容器
+
+org.springframework.context.ApplicationContext接口表示Spring IoC容器，并负责实例化，配置和组装Bean。容器通过读取配置元数据来获取有关要实例化，配置和组装哪些对象的指令。
+
+* XML：传统的配置方法
+* Annotation-based Container Configuration：自Spring2.5引入，基于注解的配置提供了XML设置bean的替代方法。
+* Java-based Container Configuration：自Spring3.0引入，主要通过@Bean，@Configuration来分别表示由SpringIoC容器管理的对象和bean定义的来源（可以简单那理解为代替xml的定义）。
+
+ApplicationContext是高级工厂的接口，该工厂能够维护不同bean及其依赖关系的注册表。 通过使用方法T getBean（String name，Class <T> requiredType），可以检索bean的实例。
+
+## Bean
+
+Spring IoC容器管理一个或多个bean。 这些bean通过我们配置到元数据进行创建，比如在xml文件中定义<bean></bean>，在容器本身内，这些bean定义表示为BeanDefinition对象，Spring官网列出了一个表格：
+
+| Property                 | Explained in…                                                |
+| :----------------------- | :----------------------------------------------------------- |
+| Class                    | [Instantiating Beans](https://docs.spring.io/spring/docs/5.2.6.RELEASE/spring-framework-reference/core.html#beans-factory-class) |
+| Name                     | [Naming Beans](https://docs.spring.io/spring/docs/5.2.6.RELEASE/spring-framework-reference/core.html#beans-beanname) |
+| Scope                    | [Bean Scopes](https://docs.spring.io/spring/docs/5.2.6.RELEASE/spring-framework-reference/core.html#beans-factory-scopes) |
+| Constructor arguments    | [Dependency Injection](https://docs.spring.io/spring/docs/5.2.6.RELEASE/spring-framework-reference/core.html#beans-factory-collaborators) |
+| Properties               | [Dependency Injection](https://docs.spring.io/spring/docs/5.2.6.RELEASE/spring-framework-reference/core.html#beans-factory-collaborators) |
+| Autowiring mode          | [Autowiring Collaborators](https://docs.spring.io/spring/docs/5.2.6.RELEASE/spring-framework-reference/core.html#beans-factory-autowire) |
+| Lazy initialization mode | [Lazy-initialized Beans](https://docs.spring.io/spring/docs/5.2.6.RELEASE/spring-framework-reference/core.html#beans-factory-lazy-init) |
+| Initialization method    | [Initialization Callbacks](https://docs.spring.io/spring/docs/5.2.6.RELEASE/spring-framework-reference/core.html#beans-factory-lifecycle-initializingbean) |
+| Destruction method       | [Destruction Callbacks](https://docs.spring.io/spring/docs/5.2.6.RELEASE/spring-framework-reference/core.html#beans-factory-lifecycle-disposablebean) |
+
+ ### Bean的命名
+
+每个bean具有一个或多个标识符。这些标识符在承载Bean的容器内必须是唯一的。一个bean通常只有一个标识符。如果需要多个，则可以将多余的别名视为别名。可以为一个Bean配置多个别名。
+
+### Bean的实例化
+
+* 通过构造函数实例化
+* 通过静态工厂方法实例化
+* 通过普通工厂方法实例化：在<bean></bean>的class设置为空，在factory-bean属性中指定要创建对象的实例方法的bean的名称，在factory-method属性中在设置工厂方法的名称。
+
+### 确定Bean的运行时类型
+
+找出特定bean的实际运行时类型的推荐方法是对指定bean名称的BeanFactory.getType()方法。这考虑了以上所有情况，并返回了BeanFactory.getBean调用将针对同一bean名称返回的对象类型。
+
+## 依赖
+
+### 依赖注入
+
+* 通过构造器注入
+* 通过setter方法注入
+
+#### 基于构造器注入
+
+基于构造函数的DI是通过容器调用具有多个参数的构造函数来完成的，每个参数表示一个依赖项。 调用带有特定参数的静态工厂方法来构造Bean几乎是等效的。
+
+**构造函数参数解析**
+
+* 如果构造方法中的参数类型不存在歧义，通过参数类型进行匹配
+* 如果构造方法中的参数是基本类型，需要我们手动在构造方法中进行赋值
+* type：<constructor-arg type=""> 确定类型
+* index：<constructor-arg index="">确定顺序
+* name：通过name来消除歧义
+
+#### 基于setter方法注入
+
+通过调用无参数构造函数或无参数静态工厂方法来实例化bean之后，容器通过在bean上调用setter方法来完成基于setter的依赖注入。
+
+> **基于构造方法和基于setter的比较**
+>
+> * 可以混用
+>
+> * Spring团队通常提倡构造函数注入，因为它可以让您将应用程序组件实现为不可变对象，并确保所需的依赖项不为null。
+>
+> * Setter注入主要应仅用于可以在类中分配合理的默认值的可选依赖项。
+
+#### 依赖解析过程 
+
+* 使用描述所有Bean的配置元数据来创建和初始化ApplicationContext。 可以通过XML，Java代码或注释指定配置元数据。
+* 对于每个bean，其依赖关系都以属性，构造函数参数或static-factory方法的参数的形式表示。
+* 每个属性或构造函数参数都是要设置的值的实际定义，或者是对容器中另一个bean的引用。
+* 每个属性都会根据指定的类型自动转型，默认情况下，String可以转为int boolean等。
+
+
+
+>**循环引用**
+>
+>
+
+
+
+
+
+
+
+
+
+
+
